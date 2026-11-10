@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Main Menu -->
+    <menuitem
+        id="menu_student_management_root"
+        name="Student Management"
+        sequence="10"
+        groups="student_management.group_student_management_admin,student_management.group_student_management_teacher,student_management.group_student_management_accountant"
+    />
+
+    <!-- Students -->
+    <menuitem
+        id="menu_student_management_students"
+        name="Students"
+        parent="menu_student_management_root"
+        action="action_school_student"
+        sequence="10"
+        groups="student_management.group_student_management_admin,student_management.group_student_management_teacher"
+    />
+
+    <!-- Teachers -->
+    <menuitem
+        id="menu_student_management_teachers"
+        name="Teachers"
+        parent="menu_student_management_root"
+        action="action_school_teacher"
+        sequence="20"
+        groups="student_management.group_student_management_admin"
+    />
+
+    <!-- Subjects -->
+    <menuitem
+        id="menu_student_management_subjects"
+        name="Subjects"
+        parent="menu_student_management_root"
+        action="action_school_subject"
+        sequence="30"
+        groups="student_management.group_student_management_admin"
+    />
+
+    <!-- Classes -->
+    <menuitem
+        id="menu_student_management_classes"
+        name="Classes"
+        parent="menu_student_management_root"
+        action="action_school_class"
+        sequence="40"
+        groups="student_management.group_student_management_admin"
+    />
+
+    <!-- Enrollments -->
+    <menuitem
+        id="menu_student_management_enrollments"
+        name="Enrollments"
+        parent="menu_student_management_root"
+        action="action_school_enrollment"
+        sequence="50"
+        groups="student_management.group_student_management_admin,,student_management.group_student_management_accountant"
+    />
+
+    <!-- Payments -->
+    <menuitem
+    id="menu_student_management_payments"
+    name="Payments"
+    parent="menu_student_management_root"
+    action="action_school_payment"
+    sequence="60"
+    groups="student_management.group_student_management_admin,student_management.group_student_management_accountant"
+    />
+
+    <!-- Timetables -->
+    <menuitem
+        id="menu_student_management_timetables"
+        name="Timetables"
+        parent="menu_student_management_root"
+        action="action_school_timetable"
+        sequence="70"
+        groups="student_management.group_student_management_admin,student_management.group_student_management_teacher"
+    />
+
+    <!-- Semester Menu -->
+    <menuitem
+        id="menu_school_semester"
+        name="Semesters"
+        parent="menu_student_management_root"
+        action="action_school_semester"
+        sequence="80"
+        groups="student_management.group_student_management_admin"
+    />
+
+
+
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Student ID -->
+    <record id="seq_school_student" model="ir.sequence">
+        <field name="name">Student ID</field>
+        <field name="code">school.student</field>
+        <field name="prefix">STU</field>
+        <field name="padding">4</field>
+    </record>
+
+    <!-- Teacher ID -->
+    <record id="seq_school_teacher" model="ir.sequence">
+        <field name="name">Teacher ID</field>
+        <field name="code">school.teacher</field>
+        <field name="prefix">TCH</field>
+        <field name="padding">4</field>
+    </record>
+
+    <!-- Class ID -->
+    <record id="seq_school_class" model="ir.sequence">
+        <field name="name">Class ID</field>
+        <field name="code">school.class</field>
+        <field name="prefix">CLS</field>
+        <field name="padding">4</field>
+    </record>
+
+    <!-- Enrollment Reference -->
+    <record id="seq_school_enrollment" model="ir.sequence">
+        <field name="name">Enrollment Reference</field>
+        <field name="code">school.enrollment</field>
+        <field name="prefix">ENR</field>
+        <field name="padding">4</field>
+    </record>
+
+    <!-- Payment Reference -->
+    <record id="seq_school_payment" model="ir.sequence">
+        <field name="name">Payment Reference</field>
+        <field name="code">school.payment</field>
+        <field name="prefix">PAY</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>

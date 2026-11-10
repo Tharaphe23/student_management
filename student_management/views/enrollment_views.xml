@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Enrollment Tree View -->
+    <record id="view_school_enrollment_tree" model="ir.ui.view">
+        <field name="name">school.enrollment.tree</field>
+        <field name="model">school.enrollment</field>
+        <field name="arch" type="xml">
+            <tree string="Enrollments">
+
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="class_id"/>
+                <field name="subject_ids"/>
+                <field name="enrollment_date"/>
+                <field name="fee"/>
+                <field name="currency_id"/>
+                <field name="paid_amount"/>
+                <field name="remaining_amount"/>
+                <field name="payment_status"/>
+                <field name="enrollment_status"/>
+
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- Enrollment Form View -->
+    <record id="view_school_enrollment_form" model="ir.ui.view">
+        <field name="name">school.enrollment.form</field>
+        <field name="model">school.enrollment</field>
+        <field name="arch" type="xml">
+            <form string="Enrollment">
+
+                <header>
+                    <button name="action_open_timetable"
+                            string="View Timetable"
+                            type="object"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('payment_status', '=', 'unpaid')]}"/>
+                </header>
+
+                <sheet>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+
+                        <group string="Enrollment Information">
+
+                            <field name="student_id"/>
+                            <field name="class_id"/>
+                            <field name="subject_ids"
+                             widget="many2many_tags"
+                            domain="[('class_ids', 'in', [class_id])]"/>
+                            <field name="enrollment_date"/>
+
+                        </group>
+
+                        <group string="Payment Information">
+
+                            <field name="fee"/>
+                            <field name="currency_id"/>
+                            <field name="paid_amount" readonly="1"/>
+                            <field name="payment_status" readonly="1"/>
+                            <field name="enrollment_status" readonly="1"/>
+
+
+                        </group>
+
+                    </group>
+
+                    <notebook>
+
+                        <page string="Payments">
+
+                            <field name="payment_ids">
+
+                                <tree>
+
+                                    <field name="name"/>
+                                    <field name="payment_date"/>
+                                    <field name="amount"/>
+                                    <field name="payment_method"/>
+                                    <field name="state"/>
+
+                                </tree>
+
+                            </field>
+
+                        </page>
+
+                    </notebook>
+
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+
+    <!-- Enrollment Search View -->
+    <record id="view_school_enrollment_search" model="ir.ui.view">
+        <field name="name">school.enrollment.search</field>
+        <field name="model">school.enrollment</field>
+        <field name="arch" type="xml">
+            <search string="Search Enrollments">
+
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="class_id"/>
+
+                <separator/>
+
+                <filter name="unpaid"
+                        string="Unpaid"
+                        domain="[('payment_status', '=', 'unpaid')]"/>
+
+                <filter name="paid"
+                        string="Paid"
+                        domain="[('payment_status', '=', 'paid')]"/>
+
+                <group expand="0" string="Group By">
+                <filter name="group_by_class"
+                            string="Class"
+                            context="{'group_by': 'class_id'}"/>
+
+                    <filter name="group_by_date"
+                            string="Enrollment Date"
+                            context="{'group_by': 'enrollment_date'}"/>
+
+                    <filter name="group_by_payment"
+                            string="Payment Status"
+                            context="{'group_by': 'payment_status'}"/>
+
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Enrollment Action -->
+    <record id="action_school_enrollment"
+            model="ir.actions.act_window">
+
+        <field name="name">Enrollments</field>
+        <field name="res_model">school.enrollment</field>
+        <field name="view_mode">tree,form</field>
+
+        <field name="search_view_id"
+               ref="view_school_enrollment_search"/>
+
+    </record>
+
+
+</odoo>

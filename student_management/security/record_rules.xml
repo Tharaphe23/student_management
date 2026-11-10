@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Teacher: Own Teacher Record -->
+    <record id="rule_school_teacher_own" model="ir.rule">
+        <field name="name">Teacher: Own Record Only</field>
+        <field name="model_id" ref="model_school_teacher"/>
+        <field name="groups"
+               eval="[(4, ref('group_student_management_teacher'))]"/>
+        <field name="domain_force">
+            [('user_id', '=', user.id)]
+        </field>
+    </record>
+
+    <!-- Teacher: Own Timetable Only -->
+    <record id="rule_school_timetable_teacher" model="ir.rule">
+        <field name="name">Teacher: Own Timetable Only</field>
+        <field name="model_id" ref="model_school_timetable"/>
+        <field name="groups"
+               eval="[(4, ref('group_student_management_teacher'))]"/>
+        <field name="domain_force">
+            [('teacher_id.user_id', '=', user.id)]
+        </field>
+    </record>
+
+    <!-- Teacher: Own Classes Only -->
+    <record id="rule_school_class_teacher" model="ir.rule">
+        <field name="name">Teacher: Own Classes Only</field>
+        <field name="model_id" ref="model_school_class"/>
+        <field name="groups"
+               eval="[(4, ref('group_student_management_teacher'))]"/>
+        <field name="domain_force">
+            [('teacher_user_ids', 'in', [user.id])]
+        </field>
+    </record>
+
+    <!-- Teacher: Students in Own Classes Only -->
+    <record id="rule_school_student_teacher" model="ir.rule">
+        <field name="name">Teacher: Students in Own Classes</field>
+        <field name="model_id" ref="model_school_student"/>
+        <field name="groups"
+               eval="[(4, ref('group_student_management_teacher'))]"/>
+        <field name="domain_force">
+            [('teacher_user_ids', 'in', [user.id])]
+        </field>
+    </record>
+
+</odoo>

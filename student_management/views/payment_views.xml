@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Payment Tree View -->
+    <record id="view_school_payment_tree" model="ir.ui.view">
+        <field name="name">school.payment.tree</field>
+        <field name="model">school.payment</field>
+        <field name="arch" type="xml">
+            <tree string="Payments">
+
+                <field name="name"/>
+                <field name="enrollment_id"/>
+                <field name="student_id"/>
+                <field name="payment_date"/>
+                <field name="amount"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="payment_method"/>
+                <field name="state"/>
+
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- Payment Form View -->
+    <record id="view_school_payment_form" model="ir.ui.view">
+        <field name="name">school.payment.form</field>
+        <field name="model">school.payment</field>
+        <field name="arch" type="xml">
+            <form string="Payment">
+
+                <header>
+
+                    <button name="action_confirm"
+                            string="Confirm Payment"
+                            type="object"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+
+                    <button name="action_cancel"
+                            string="Cancel"
+                            type="object"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+
+                    <field name="state"
+                           widget="statusbar"
+                           statusbar_visible="draft,confirmed,cancelled"/>
+
+                </header>
+
+                <sheet>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+
+                        <group string="Payment Information">
+
+                            <field name="enrollment_id"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
+                            <field name="student_id"/>
+                            <field name="payment_date"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
+                        </group>
+
+                        <group string="Payment Details">
+
+                            <field name="amount"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
+                            <field name="currency_id" invisible="1"/>
+
+                            <field name="payment_method"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
+                        </group>
+
+                    </group>
+
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+
+    <!-- Payment Search View -->
+    <record id="view_school_payment_search" model="ir.ui.view">
+        <field name="name">school.payment.search</field>
+        <field name="model">school.payment</field>
+        <field name="arch" type="xml">
+            <search string="Search Payments">
+
+                <field name="name"/>
+                <field name="enrollment_id"/>
+                <field name="student_id"/>
+
+                <separator/>
+
+                <filter name="draft"
+                        string="Draft"
+                        domain="[('state', '=', 'draft')]"/>
+
+                <filter name="confirmed"
+                        string="Confirmed"
+                        domain="[('state', '=', 'confirmed')]"/>
+
+                <filter name="cancelled"
+                        string="Cancelled"
+                        domain="[('state', '=', 'cancelled')]"/>
+                <group expand="0" string="Group By">
+
+                    <filter name="group_by_payment_date"
+                            string="Payment Date"
+                            context="{'group_by': 'payment_date'}"/>
+
+                    <filter name="group_by_method"
+                            string="Payment Method"
+                            context="{'group_by': 'payment_method'}"/>
+
+                    <filter name="group_by_state"
+                            string="Payment Status"
+                            context="{'group_by': 'state'}"/>
+
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Payment Action -->
+    <record id="action_school_payment"
+            model="ir.actions.act_window">
+
+        <field name="name">Payments</field>
+        <field name="res_model">school.payment</field>
+        <field name="view_mode">tree,form</field>
+
+        <field name="search_view_id"
+               ref="view_school_payment_search"/>
+
+    </record>
+
+
+</odoo>

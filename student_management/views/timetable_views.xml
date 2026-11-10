@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Tree View -->
+    <record id="view_school_timetable_tree" model="ir.ui.view">
+        <field name="name">school.timetable.tree</field>
+        <field name="model">school.timetable</field>
+        <field name="arch" type="xml">
+            <tree string="Timetable">
+                <field name="name"/>
+                <field name="semester_id"/>
+                <field name="class_id"/>
+                <field name="day_of_week"/>
+                <field name="subject_id"/>
+                <field name="teacher_id"/>
+                <field name="start_time" widget="float_time"/>
+                <field name="end_time" widget="float_time"/>
+                <field name="room"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_school_timetable_form" model="ir.ui.view">
+        <field name="name">school.timetable.form</field>
+        <field name="model">school.timetable</field>
+        <field name="arch" type="xml">
+            <form string="Timetable">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="scheduled,completed,cancelled"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Timetable Name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Class Information">
+                            <field name="class_id"/>
+                            <field name="semester_id"/>
+                        </group>
+
+                        <group string="Subject Information">
+                            <field name="subject_id"/>
+                            <field name="teacher_id"/>
+                            <field name="room"/>
+                        </group>
+                    </group>
+
+                    <group string="Schedule">
+                        <field name="day_of_week"/>
+                        <field name="start_time" widget="float_time"/>
+                        <field name="end_time" widget="float_time"/>
+                    </group>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_school_timetable_search" model="ir.ui.view">
+        <field name="name">school.timetable.search</field>
+        <field name="model">school.timetable</field>
+        <field name="arch" type="xml">
+            <search string="Search Timetable">
+                <field name="name"/>
+                <field name="semester_id"/>
+                <field name="class_id"/>
+                <field name="teacher_id"/>
+                <field name="subject_id"/>
+                <field name="day_of_week"/>
+                <field name="room"/>
+
+                <separator/>
+
+                <filter name="scheduled" string="Scheduled" domain="[('state', '=', 'scheduled')]"/>
+
+                <filter name="completed" string="Completed" domain="[('state', '=', 'completed')]"/>
+
+                <filter name="cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
+
+                <group expand="0" string="Group By">
+                    <filter name="group_by_semester" string="Semester" context="{'group_by': 'semester_id'}"/>
+
+                    <filter name="group_by_class" string="Class" context="{'group_by': 'class_id'}"/>
+                    <filter name="group_by_day" string="Day" context="{'group_by': 'day_of_week'}"/>
+
+                    <filter name="group_by_teacher" string="Teacher" context="{'group_by': 'teacher_id'}"/>
+                    <filter name="group_by_subject" string="Subject" context="{'group_by': 'subject_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_school_timetable" model="ir.actions.act_window">
+        <field name="name">Timetable</field>
+        <field name="res_model">school.timetable</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_school_timetable_search"/>
+    </record>
+
+</odoo>
