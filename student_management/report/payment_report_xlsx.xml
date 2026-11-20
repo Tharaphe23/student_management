@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_payment_report_xlsx" model="ir.actions.report">
+        <field name="name">Payment Excel Report</field>
+
+        
+        <field name="model">school.payment</field>
+
+        <field name="report_type">xlsx</field>
+        <field name="report_name">student_management.payment_report_xlsx</field>
+        <field name="report_file">student_management.payment_report_xlsx</field>
+        <field name="attachment_use">False</field>
+    </record>
+</odoo>

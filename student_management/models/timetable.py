@@ -13,6 +13,8 @@ class SchoolTimetable(models.Model):
         required=True,
         tracking=True
     )
+    
+    active=fields.Boolean(string="Active", default=True)
 
     class_id = fields.Many2one(
         'school.class',
@@ -87,6 +89,7 @@ class SchoolTimetable(models.Model):
     'room',
     'state'
 )
+   
     def _check_schedule(self):
         for rec in self:
             if rec.start_time >= rec.end_time:
@@ -130,7 +133,44 @@ class SchoolTimetable(models.Model):
                     'This room is already occupied.'
                 ))
                 
+   
     def unlink(self):
-        raise UserError(_(
-        "You cannot delete this timetable record."
-    ))
+        if any(rec.state == 'completed' for rec in self):
+            raise UserError(_(
+                "Completed sessions cannot be deleted."
+            ))
+        return super().unlink()
+    
+    def action_cancel(self):
+        for rec in self:
+            if rec.state != 'scheduled':
+                raise UserError(_(
+                    "Only scheduled timetables can be cancelled."
+                ))
+
+            if not self.env.user.has_group(
+                'student_management.group_student_management_admin'
+            ):
+                raise UserError(_(
+                    "Only Administrator can cancel timetables."
+                ))
+
+            rec.write({'state': 'cancelled'})
+            
+    def write(self, vals):
+        if vals.get('active') is False:
+            for record in self:
+                if record.state == 'scheduled':
+                    raise UserError(_(
+                        "Scheduled timetables cannot be archived."
+                    ))
+
+        return super().write(vals)
+    
+    @api.constrains('semester_id', 'state')
+    def _check_semester_not_completed(self):
+        for rec in self:
+            if rec.state == 'scheduled' and rec.semester_id.state == 'completed':
+                raise ValidationError(_(
+                    'Cannot schedule a session in a completed semester.'
+                ))

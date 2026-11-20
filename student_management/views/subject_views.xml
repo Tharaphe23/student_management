@@ -43,7 +43,8 @@
                             <field name="subject_code"/>
                             <field name="fee"/>
                             <field name="currency_id"/>
-                            <field name="description"/>
+                            <field name="active" invisible="1"/>
+                            
                         </group>
 
                     </group>
@@ -68,8 +69,7 @@
 
                             <field name="timetable_ids">
 
-                                <tree create="false"
-                                    edit="false">
+                                <tree>
 
                                     <field name="name"/>
                                     <field name="class_id"/>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Payment Report Wizard Form -->
+    <record id="view_payment_report_wizard_form" model="ir.ui.view">
+        <field name="name">school.payment.report.wizard.form</field>
+        <field name="model">school.payment.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Payment Report">
+
+                <group col="4">
+                    <field name="date_from" colspan="2"/>
+                    <field name="date_to" colspan="2"/>
+
+                    <field name="payment_method" colspan="4"/>
+
+                    <field name="state" colspan="4"/>
+                </group>
+
+                <footer>
+                    <button name="action_print_xlsx"
+                            string="Export Excel"
+                            type="object"
+                            class="btn-primary"/>
+
+                    <button name="action_print_pdf"
+                            string="Export PDF"
+                            type="object"
+                            class="btn-primary"/>
+
+                    <button string="Cancel"
+                            special="cancel"
+                            class="btn-secondary"/>
+                </footer>
+
+            </form>
+        </field>
+    </record>
+
+    <!-- Payment Report Window Action -->
+    <record id="action_payment_report_wizard"
+            model="ir.actions.act_window">
+        <field name="name">Payment Report</field>
+        <field name="res_model">school.payment.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_payment_report_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Payment Report Menu -->
+    <menuitem id="menu_payment_report_wizard"
+              name="Payment Report"
+              parent="student_management.menu_student_management_root"
+              action="action_payment_report_wizard"
+              sequence="90"
+              groups="student_management.group_student_management_admin,student_management.group_student_management_accountant"/>
+
+</odoo>

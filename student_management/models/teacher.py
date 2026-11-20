@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields, api,_
+from odoo.exceptions import ValidationError, UserError
 
 
 class SchoolTeacher(models.Model):
@@ -19,6 +20,7 @@ class SchoolTeacher(models.Model):
         copy=False,
         default='New'
     )
+    image=fields.Image(string="Image")
 
     phone = fields.Char(string='Phone')
     email = fields.Char(string='Email')
@@ -46,14 +48,22 @@ class SchoolTeacher(models.Model):
         'teacher_id',
         string='Timetable'
     )
-#access rights လုပ်ဖို့လုပ်ဖို့   
+    #access rights လုပ်ဖို့
     user_id = fields.Many2one(
     'res.users',
     string='Related User',
     domain=[('share', '=', False)],
     ondelete='restrict'
 )
-    #----
+    # teacher gmail auto ဝင်ဖို့
+    @api.onchange('user_id')
+    def _onchange_user_id(self):
+        if self.user_id:
+            self.email = (
+                self.user_id.email
+                or self.user_id.partner_id.email
+                or self.user_id.login
+            )
 
     @api.model
     def create(self, vals):
@@ -63,3 +73,13 @@ class SchoolTeacher(models.Model):
                 or 'New'
             )
         return super(SchoolTeacher, self).create(vals)
+
+    
+    def unlink(self):
+        for record in self:
+            if record.timetable_ids:
+                raise UserError(_(
+                    "Cannot delete a teacher linked to a timetable. Archive instead."
+                ))
+
+        return super().unlink()

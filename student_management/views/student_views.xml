@@ -6,10 +6,11 @@
         <field name="name">school.student.tree</field>
         <field name="model">school.student</field>
         <field name="arch" type="xml">
-            <tree string="Students">
+            <tree string="Student">
 
                 <field name="student_code"/>
                 <field name="name"/>
+                <field name="class_id"/>
                 <field name="gender"/>
                 <field name="phone"/>
                 <field name="email"/>
@@ -33,26 +34,32 @@
                         <label for="name"/>
                         <h1>
                             <field name="name"
-                                   placeholder="Student Name"/>
+                                   placeholder="Student Name"
+                                   />
                         </h1>
                     </div>
-
+                    <div>
+                        <field name="image" widget="image" class="oe_avatar"  options="{'size': [100, 100]}"/>
+                    </div>
                     <group>
 
                         <group string="Personal Information">
-
+                            
                             <field name="student_code"/>
                             <field name="gender"/>
+                            <field name="class_id"/>
                             <field name="date_of_birth"/>
                             <field name="registration_date"/>
+                            <field name="active" invisible="1"/>
+                            
 
                         </group>
 
                         <group string="Contact Information">
-
-                            <field name="phone"/>
-                            <field name="email"/>
-                            <field name="address"/>
+                            
+                            <field name="phone" widget="phone" default_focus="1"/>
+                            <field name="email" widget="email"/>
+                            <field name="address" widget="url"/>
 
                         </group>
 

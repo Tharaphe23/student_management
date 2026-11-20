@@ -1,4 +1,5 @@
 from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError, UserError
 
 
 class SchoolStudent(models.Model):
@@ -24,6 +25,14 @@ class SchoolStudent(models.Model):
     phone = fields.Char(string='Phone')
     email = fields.Char(string='Email')
     address = fields.Text(string='Address')
+    image=fields.Image(string="Image")
+  
+    
+    class_id = fields.Many2one(
+    'school.class',
+    string='Grade',
+    ondelete='restrict'
+)    
 
     gender = fields.Selection([
         ('male', 'Male'),
@@ -74,3 +83,14 @@ class SchoolStudent(models.Model):
             )
 
         return super(SchoolStudent, self).create(vals)
+    
+    def unlink(self):
+        for record in self:
+            if record.enrollment_ids:
+                raise UserError(_(
+                    "You cannot delete a student who has enrollments. "
+                    "Please archive the student instead."
+                ))
+
+        return super().unlink()
+    

@@ -56,7 +56,7 @@
         parent="menu_student_management_root"
         action="action_school_enrollment"
         sequence="50"
-        groups="student_management.group_student_management_admin,,student_management.group_student_management_accountant"
+        groups="student_management.group_student_management_admin,student_management.group_student_management_accountant"
     />
 
     <!-- Payments -->
@@ -88,6 +88,9 @@
         sequence="80"
         groups="student_management.group_student_management_admin"
     />
+
+      
+    
 
 
 

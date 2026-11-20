@@ -33,6 +33,10 @@ class SchoolPayment(models.Model):
         store=True,
         readonly=True
     )
+    
+    active=fields.Boolean(string="Active",default=True)
+    
+    
 
     amount = fields.Monetary(
         string='Amount',
@@ -66,6 +70,12 @@ class SchoolPayment(models.Model):
         ('confirmed', 'Confirmed'),
         ('cancelled', 'Cancelled'),
     ], string='Status', default='draft', tracking=True, required=True)
+    
+    priority = fields.Selection([
+        ('0', 'Normal'),
+        ('1', 'Low'),
+        ('2', 'High'),
+        ('3', 'Very High')], string="Priority")
 
     @api.constrains('amount')
     def _check_amount(self):
@@ -179,6 +189,7 @@ class SchoolPayment(models.Model):
             'amount',
             'payment_date',
             'payment_method',
+            'active',
         }
 
         for rec in self:
@@ -197,3 +208,15 @@ class SchoolPayment(models.Model):
         raise UserError(_(
         "You cannot delete this payment record."
     ))
+        
+    def action_confirm(self):
+        for record in self:
+            record.state = 'confirmed'
+
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'message': 'Payment Completed Successfully!',
+                'type': 'rainbow_man',
+            }
+        }

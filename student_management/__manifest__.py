@@ -8,6 +8,7 @@
         'base',
         'web',
         'mail',
+        'report_xlsx',
     ],
 
     'data': [
@@ -23,8 +24,10 @@
         'views/subject_views.xml',
         'views/timetable_views.xml',
         'views/teacher_views.xml',
-        'report/payment_report.xml',
         'views/semester_views.xml',
+        'report/payment_report_xlsx.xml',
+        'report/payment_report_pdf.xml',
+        'wizard/payment_report_wizard.xml',
         'views/menu_views.xml',
         
        

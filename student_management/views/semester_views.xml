@@ -10,7 +10,10 @@
                 <field name="name"/>
                 <field name="start_date"/>
                 <field name="end_date"/>
-                <field name="state"/>
+                <field name="state" widget="badge"
+                    decoration-info="state == 'draft'"
+                    decoration-success="state == 'active'"
+                    decoration-muted="state == 'completed'"/>
             </tree>
         </field>
     </record>
@@ -32,6 +35,8 @@
                         <field name="name"/>
                         <field name="start_date"/>
                         <field name="end_date"/>
+                        <field name="active" invisible="1"/>
+
                     </group>
                 </sheet>
 
@@ -43,6 +48,53 @@
             </form>
         </field>
     </record>
+
+    <!-- Semester Search View -->
+<record id="view_school_semester_search" model="ir.ui.view">
+    <field name="name">school.semester.search</field>
+    <field name="model">school.semester</field>
+    <field name="arch" type="xml">
+        <search string="Search Semester">
+
+            <field name="name"/>
+            <field name="start_date"/>
+            <field name="end_date"/>
+
+            <separator/>
+
+            <filter name="active"
+                    string="Active"
+                    domain="[('active', '=', True)]"/>
+
+            <filter name="archived"
+                    string="Archived"
+                    domain="[('active', '=', False)]"/>
+
+            <filter name="draft"
+                    string="Draft"
+                    domain="[('state', '=', 'draft')]"/>
+
+            <filter name="in_progress"
+                    string="Active"
+                    domain="[('state', '=', 'active')]"/>
+
+            <filter name="completed"
+                    string="Completed"
+                    domain="[('state', '=', 'completed')]"/>
+
+            <group expand="0" string="Group By">
+                <filter name="group_by_state"
+                        string="Status"
+                        context="{'group_by': 'state'}"/>
+
+                <filter name="group_by_start_date"
+                        string="Start Date"
+                        context="{'group_by': 'start_date'}"/>
+            </group>
+
+        </search>
+    </field>
+</record>
 
     <!-- Semester Action -->
     <record id="action_school_semester" model="ir.actions.act_window">

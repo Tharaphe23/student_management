@@ -1,4 +1,5 @@
-from odoo import models, fields
+from odoo import models, fields,_
+from odoo.exceptions import ValidationError, UserError
 
 
 class SchoolSubject(models.Model):
@@ -65,3 +66,12 @@ class SchoolSubject(models.Model):
         default=lambda self: self.env.ref('base.MMK'),
         required=True
     )
+    
+    def unlink(self):
+        for record in self:
+            if record.timetable_ids:
+                raise UserError(_(
+                    "Cannot delete a subject linked to a timetable. Archive instead."
+                ))
+
+        return super().unlink()

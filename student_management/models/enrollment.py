@@ -24,6 +24,8 @@ class SchoolEnrollment(models.Model):
     tracking=True,
     ondelete='restrict'
 )
+    
+    active=fields.Boolean(string="Active",default=True)
 
     subject_ids = fields.Many2many(
     'school.subject',
@@ -97,6 +99,12 @@ class SchoolEnrollment(models.Model):
     store=True,
     currency_field='currency_id'
 )
+    
+    priority = fields.Selection([
+        ('0', 'Normal'),
+        ('1', 'Low'),
+        ('2', 'High'),
+        ('3', 'Very High')], string="Priority")
     
     
     @api.depends(
@@ -183,3 +191,13 @@ class SchoolEnrollment(models.Model):
         raise UserError(_(
         "You cannot delete this enrollments record."
     ))
+        
+    def write(self, vals):
+        if vals.get('active') is False:
+            for record in self:
+                if record.enrollment_status != 'completed':
+                    raise UserError(
+                        "Only completed enrollments can be archived."
+                    )
+
+        return super().write(vals)

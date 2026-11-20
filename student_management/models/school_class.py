@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields, api,_
+from odoo.exceptions import ValidationError, UserError
 
 
 class SchoolClass(models.Model):
@@ -57,7 +58,7 @@ class SchoolClass(models.Model):
     
     teacher_user_ids = fields.Many2many(
         'res.users',
-        string='Teacher Users',
+        string='Teachers',
         compute='_compute_teacher_user_ids',
         store=True
     )
@@ -77,3 +78,12 @@ class SchoolClass(models.Model):
                 or 'New'
             )
         return super(SchoolClass, self).create(vals)
+    
+    def unlink(self):
+        for record in self:
+            if record.timetable_ids:
+                raise UserError(_(
+                    "Cannot delete a class linked to a timetable. Archive instead."
+                ))
+
+        return super().unlink()

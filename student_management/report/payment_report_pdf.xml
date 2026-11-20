@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- PDF Report Action -->
+    <!-- PDF Report Action -->
+    <record id="action_payment_report_pdf" model="ir.actions.report">
+        <field name="name">Payment PDF Report</field>
+        <field name="model">school.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">student_management.payment_report_pdf</field>
+        <field name="report_file">student_management.payment_report_pdf</field>
+        <field name="attachment_use">False</field>
+        <field name="print_report_name">'Payment Report'</field>
+    </record>
+
+    <!-- PDF Template -->
+    <template id="payment_report_pdf">
+
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+
+                <div class="page">
+
+                    <h2 class="text-center">
+                        Payment Report
+                    </h2>
+
+                    <div class="row mt-3 mb-3">
+                        <div class="col-4">
+                            <strong>Date From:</strong>
+                            <span t-esc="date_from or 'All'"/>
+                        </div>
+
+                        <div class="col-4">
+                            <strong>Date To:</strong>
+                            <span t-esc="date_to or 'All'"/>
+                        </div>
+
+                        <div class="col-4">
+                            <strong>Method:</strong>
+                            <span t-esc="payment_method"/>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Status:</strong>
+                        <span t-esc="payment_state"/>
+                    </div>
+
+                    <table class="table table-sm table-bordered">
+
+                        <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Student ID</th>
+                                <th>Student</th>
+                                <th>Enrollment</th>
+                                <th>Payment Date</th>
+                                <th>Method</th>
+                                <th>Status</th>
+                                <th class="text-right">Amount (MMK)</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr t-foreach="docs" t-as="p">
+
+                                <td>
+                                    <span t-esc="p.name"/>
+                                </td>
+
+                                <td>
+                                    <span t-esc="p.student_id.student_code"/>
+                                </td>
+
+                                <td>
+                                    <span t-esc="p.student_id.name"/>
+                                </td>
+
+                                <td>
+                                    <span t-esc="p.enrollment_id.name"/>
+                                </td>
+
+                                <td>
+                                    <span t-esc="p.payment_date"/>
+                                </td>
+
+                                <td>
+                                    <span t-esc="p.payment_method"/>
+                                </td>
+
+                                <td>
+                                    <span t-esc="p.state"/>
+                                </td>
+
+                                <td class="text-right">
+                                    <span t-esc="'{:,.0f}'.format(p.amount)"/>
+                                </td>
+
+                            </tr>
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="7" class="text-right">
+                                    <strong>Total</strong>
+                                </td>
+
+                                <td class="text-right">
+                                    <strong>
+                                        <span t-esc="'{:,.0f}'.format(total_amount)"/>
+                                    </strong>
+                                </td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+
+                </div>
+
+            </t>
+        </t>
+
+    </template>
+
+</odoo>

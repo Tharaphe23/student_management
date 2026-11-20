@@ -34,6 +34,9 @@
                             <field name="name"/>
                         </h1>
                     </div>
+                    <div>
+                        <field name="image" widget="image" class="oe_avatar" options="{'size': [100, 100]}"/>
+                    </div>
 
                     <group>
 
@@ -41,13 +44,15 @@
 
                             <field name="teacher_code"/>
                             <field name="specialization"/>
-                             <field name="user_id"/>
+                            <field name="user_id"/>
+                            <field name="active" invisible="1"/>
+
                         </group>
 
                         <group string="Contact Information">
 
-                            <field name="phone"/>
-                            <field name="email"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="email" widget="email"/>
 
                         </group>
 
@@ -66,7 +71,7 @@
 
                             <field name="timetable_ids">
 
-                                <tree create="false" edit="false">
+                                <tree>
 
                                     <field name="name"/>
                                     <field name="class_id"/>
